@@ -33,6 +33,7 @@ BEGIN
         State NVARCHAR(50),
         ZipCode NVARCHAR(10),
         Country NVARCHAR(50) DEFAULT 'Nepal',
+        ProfileImage NVARCHAR(255),
         IsAdmin BIT DEFAULT 0,
         CreatedDate DATETIME DEFAULT GETDATE(),
         LastLogin DATETIME

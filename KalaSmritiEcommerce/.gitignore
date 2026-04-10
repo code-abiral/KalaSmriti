@@ -1,0 +1,15 @@
+# Visual Studio / ASP.NET
+.vs/
+bin/
+obj/
+
+# LocalDB / generated database files
+*.mdf
+*.ldf
+App_Data/KalaSmriti_Working.mdf
+App_Data/KalaSmriti_Working_log.ldf
+
+# User-specific files
+*.user
+*.suo
+*.userosscache

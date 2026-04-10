@@ -1,0 +1,465 @@
+<%@ Master Language="C#" AutoEventWireup="true" CodeFile="Site.Master.cs" Inherits="SiteMaster" %>
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head runat="server">
+
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title><%: Page.Title %> - KalaSmriti | Heritage of Nepal</title>
+
+    
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    
+
+    <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap');
+
+        
+
+        :root {
+
+            --nepal-red: #7f1d1d;
+
+            --nepal-gold: #b45309;
+
+            --heritage-cream: #fdfcf7;
+
+        }
+
+
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--heritage-cream); }
+
+        .font-heritage { font-family: 'Cinzel', serif; }
+
+        .font-serif-italic { font-family: 'Playfair Display', serif; font-style: italic; }
+
+        
+
+        .nav-item { position: relative; transition: all 0.3s ease; }
+
+        .nav-item::after { 
+
+            content: ''; position: absolute; width: 0; height: 1.5px; 
+
+            bottom: -4px; left: 0; background-color: var(--nepal-gold); transition: 0.3s ease; 
+
+        }
+
+        .nav-item:hover::after { width: 100%; }
+
+        .nav-item:hover { color: var(--nepal-gold); }
+
+
+
+        .nepal-gradient {
+
+            background: linear-gradient(to right, var(--nepal-red), var(--nepal-gold));
+
+        }
+
+
+
+        .header-glass {
+
+            background: rgba(255, 255, 255, 0.9);
+
+            backdrop-filter: blur(10px);
+
+            -webkit-backdrop-filter: blur(10px);
+
+        }
+
+    </style>
+
+    <asp:ContentPlaceHolder ID="head" runat="server"></asp:ContentPlaceHolder>
+
+</head>
+
+<body class="text-gray-900">
+
+    <form id="form1" runat="server">
+
+        <asp:ScriptManager runat="server"></asp:ScriptManager>
+
+
+
+        <div class="nepal-gradient text-white text-[10px] py-2 text-center uppercase tracking-[0.3em] font-bold shadow-md">
+
+            <i class="fas fa-om mr-2"></i> Handcrafted Heritage from the Himalayas • Free Shipping in Nepal <i class="fas fa-om ml-2"></i>
+
+        </div>
+
+
+
+        <header class="sticky top-0 z-50 header-glass border-b border-amber-100/50 shadow-sm">
+
+            <div class="container mx-auto px-4">
+
+                <div class="flex items-center justify-between h-20 md:h-28">
+
+                    
+
+                    <a href="Default.aspx" class="flex flex-col items-center group flex-shrink-0">
+
+                        <span class="font-heritage text-2xl md:text-3xl font-bold tracking-tighter text-amber-900 group-hover:text-amber-700 transition-colors">KALASMRITI</span>
+
+                        <div class="flex items-center gap-2 -mt-1">
+
+                            <span class="h-[1px] w-4 bg-amber-600"></span>
+
+                            <span class="text-[8px] md:text-[9px] uppercase tracking-[0.4em] text-amber-600 font-bold">Artisan Legacy</span>
+
+                            <span class="h-[1px] w-4 bg-amber-600"></span>
+
+                        </div>
+
+                    </a>
+
+
+
+                    <nav class="hidden lg:flex items-center space-x-10 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-600">
+
+                        <a href="Default.aspx" class="nav-item">Home</a>
+
+                        <a href="Shop.aspx" class="nav-item">Shop</a>
+
+                        <a href="About.aspx" class="nav-item">About</a>
+
+                        <a href="Contact.aspx" class="nav-item">Contact</a>
+
+                    </nav>
+
+
+
+                    <div class="hidden md:flex items-center space-x-6">
+
+                        <div class="relative group">
+
+                            <input type="text" placeholder="Search heritage..." 
+
+                                   class="bg-amber-50/30 border-b border-amber-200 py-1.5 pl-8 pr-4 text-xs focus:border-amber-700 outline-none transition-all w-40 focus:w-60 italic" />
+
+                            <i class="fas fa-search absolute left-0 top-2 text-amber-800/40"></i>
+
+                        </div>
+
+
+
+                        <div class="flex items-center space-x-4 border-l pl-6 border-amber-100">
+
+                            <% if (!HttpContext.Current.User.Identity.IsAuthenticated) { %>
+
+                                <a href="Login.aspx" class="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-amber-800">Login</a>
+
+                                <a href="Register.aspx" class="bg-amber-900 text-white px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-800 transition shadow-lg rounded-sm">Register</a>
+
+                            <% } else { %>
+
+                                <a href="Notifications.aspx" class="relative group px-2">
+
+                                    <i class="fas fa-bell text-xl text-amber-800 group-hover:text-amber-600 transition-colors"></i>
+
+                                    <span class="absolute top-0 right-1 flex h-2 w-2">
+
+                                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+
+                                        <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-600"></span>
+
+                                    </span>
+
+                                </a>
+
+
+
+                                <a href="Profile.aspx" class="group flex items-center space-x-3">
+
+                                    <div class="relative">
+
+                                        <asp:Image ID="imgHeaderProfile" runat="server" 
+
+                                            CssClass="w-9 h-9 rounded-full border border-amber-200 object-cover shadow-sm group-hover:border-amber-600 transition-all" 
+
+                                            ImageUrl="~/Uploads/Profiles/default-user.png" />
+
+                                    </div>
+
+                                </a>
+
+                                <asp:LinkButton ID="btnLogout" runat="server" OnClick="Logout_Click" CssClass="text-red-700 text-[10px] font-bold uppercase tracking-widest hover:text-red-900 transition-colors">Logout</asp:LinkButton>
+
+                            <% } %>
+
+                            
+
+                            <a href="Cart.aspx" class="relative group ml-2">
+
+                                <i class="fas fa-shopping-bag text-2xl text-amber-900 group-hover:scale-110 transition-transform"></i>
+
+                                <asp:Label ID="lblCartCount" runat="server" 
+
+                                    CssClass="absolute -top-2 -right-2 bg-red-700 text-white text-[9px] font-black rounded-full h-5 w-5 flex items-center justify-center border-2 border-white">0</asp:Label>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="md:hidden flex items-center space-x-5">
+
+                        <% if (HttpContext.Current.User.Identity.IsAuthenticated) { %>
+
+                            <a href="Notifications.aspx" class="relative">
+
+                                <i class="fas fa-bell text-xl text-amber-900"></i>
+
+                                <span class="absolute -top-1 -right-1 flex h-2 w-2">
+
+                                    <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-600 border border-white"></span>
+
+                                </span>
+
+                            </a>
+
+                        <% } %>
+
+
+
+                         <a href="Cart.aspx" class="relative">
+
+                            <i class="fas fa-shopping-bag text-xl text-amber-900"></i>
+
+                            <span class="absolute -top-2 -right-2 bg-red-700 text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">0</span>
+
+                        </a>
+
+                        <button type="button" onclick="toggleMenu()" class="text-amber-900 text-2xl">
+
+                            <i class="fas fa-bars"></i>
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div id="mobileMenu" class="hidden fixed inset-0 z-[100] bg-white transition-all duration-300">
+
+                <div class="p-6">
+
+                    <div class="flex justify-between items-center mb-12">
+
+                        <span class="font-heritage text-xl font-bold text-amber-900">KALASMRITI</span>
+
+                        <button type="button" onclick="toggleMenu()" class="text-2xl text-amber-900">&times;</button>
+
+                    </div>
+
+                    
+
+                    <div class="mb-8">
+
+                        <input type="text" placeholder="Search treasures..." class="w-full bg-amber-50 p-4 rounded-sm border border-amber-100 outline-none italic" />
+
+                    </div>
+
+
+
+                    <nav class="flex flex-col space-y-6 text-sm font-bold uppercase tracking-[0.3em] text-gray-800">
+
+                        <a href="Default.aspx" onclick="toggleMenu()">Home</a>
+
+                        <a href="Shop.aspx" onclick="toggleMenu()">Shop</a>
+
+                        <a href="About.aspx" onclick="toggleMenu()">About</a>
+
+                        <a href="Contact.aspx" onclick="toggleMenu()">Contact</a>
+
+                        <hr class="border-amber-50" />
+
+                        <% if (!HttpContext.Current.User.Identity.IsAuthenticated) { %>
+
+                            <a href="Login.aspx" class="text-amber-700">Login</a>
+
+                            <a href="Register.aspx" class="bg-amber-900 text-white p-4 text-center rounded-sm">Register</a>
+
+                        <% } else { %>
+
+                            <a href="Notifications.aspx" onclick="toggleMenu()" class="flex items-center gap-2">
+
+                                <i class="fas fa-bell"></i> Notifications
+
+                            </a>
+
+                            <div class="flex items-center space-x-4 mb-4">
+
+                                <asp:Image ID="imgMobileProfile" runat="server" 
+
+                                    CssClass="w-12 h-12 rounded-full border border-amber-200 object-cover" 
+
+                                    ImageUrl="~/Uploads/Profiles/default-user.png" />
+
+                                <a href="Profile.aspx" class="text-amber-900" onclick="toggleMenu()">My Profile</a>
+
+                            </div>
+
+                            <asp:LinkButton ID="LinkButton1" runat="server" OnClick="Logout_Click" CssClass="text-red-700">Logout</asp:LinkButton>
+
+                        <% } %>
+
+                    </nav>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <main class="min-h-screen">
+
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+
+        </main>
+
+
+
+        <footer class="bg-[#120d08] text-[#d4ad6a] pt-20 pb-10">
+
+            <div class="container mx-auto px-4">
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 text-center md:text-left">
+
+                    <div class="space-y-6">
+
+                        <p class="font-heritage text-2xl text-white tracking-widest">KALASMRITI</p>
+
+                        <p class="text-[11px] leading-relaxed opacity-70 uppercase tracking-[0.2em]">
+
+                            Dedicated to the preservation of authentic Himalayan artistry. We bridge ancient traditions with modern elegance.
+
+                        </p>
+
+                    </div>
+
+
+
+                    <div class="flex flex-col space-y-4">
+
+                        <span class="text-white text-[11px] font-bold uppercase tracking-[0.2em] mb-2">Collections</span>
+
+                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Traditional Thangka</a>
+
+                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Wooden Carvings</a>
+
+                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Bronze Statues</a>
+
+                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Heritage Bells</a>
+
+                    </div>
+
+
+
+                    <div class="flex flex-col space-y-4">
+
+                        <span class="text-white text-[11px] font-bold uppercase tracking-[0.2em] mb-2">Quick Links</span>
+
+                        <a href="Default.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Home</a>
+
+                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Shop Collection</a>
+
+                        <a href="About.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">About Us</a>
+
+                        <a href="Contact.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Contact</a>
+
+                    </div>
+
+
+
+                    <div class="space-y-6">
+
+                        <span class="text-white text-[11px] font-bold uppercase tracking-[0.2em]">Connect With Us</span>
+
+                        <div class="flex justify-center md:justify-start space-x-6 text-xl">
+
+                            <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+
+                            <a href="#" class="hover:text-white transition-colors"><i class="fab fa-facebook-f"></i></a>
+
+                            <a href="#" class="hover:text-white transition-colors"><i class="fab fa-pinterest-p"></i></a>
+
+                        </div>
+
+                        <p class="text-[10px] italic opacity-60 uppercase tracking-widest">Kathmandu, Nepal</p>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="pt-8 border-t border-white/5 text-center">
+
+                    <p class="text-[9px] uppercase tracking-[0.5em] opacity-40">
+
+                        &copy; <%= DateTime.Now.Year %> KalaSmriti Artisans Collective.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </footer>
+
+    </form>
+
+
+
+    <script>
+
+        function toggleMenu() {
+
+            const menu = document.getElementById('mobileMenu');
+
+            if (menu.classList.contains('hidden')) {
+
+                menu.classList.remove('hidden');
+
+                document.body.style.overflow = 'hidden';
+
+            } else {
+
+                menu.classList.add('hidden');
+
+                document.body.style.overflow = 'auto';
+
+            }
+
+        }
+
+    </script>
+
+</body>
+
+</html>

@@ -7,9 +7,9 @@ If you're seeing "Error fetching products" or "Can't login", follow these steps:
 ### **Option 1: Automated Setup (Recommended)**
 
 1. Open PowerShell as Administrator
-2. Navigate to the App_Data directory:
+2. Navigate to the App_Data directory in your cloned repo:
    ```powershell
-   cd "d:\KalaSmriti\KalaSmriti\App_Data"
+   cd "<your-clone-path>\KalaSmritiEcommerce\App_Data"
    ```
 
 3. Run the setup script:

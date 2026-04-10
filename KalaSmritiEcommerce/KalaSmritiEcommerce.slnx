@@ -7,14 +7,14 @@
       <Property Name="Debug.AspNetCompiler.Debug" Value="&quot;True&quot;" />
       <Property Name="Debug.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
       <Property Name="Debug.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
-      <Property Name="Debug.AspNetCompiler.PhysicalPath" Value="&quot;D:\Kala_smriti\KalaSmritiEcommerce\KalaSmritiEcommerce\&quot;" />
+      <Property Name="Debug.AspNetCompiler.PhysicalPath" Value="&quot;.&quot;" />
       <Property Name="Debug.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_52325\&quot;" />
       <Property Name="Debug.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
       <Property Name="Debug.AspNetCompiler.VirtualPath" Value="&quot;/localhost_52325&quot;" />
       <Property Name="Release.AspNetCompiler.Debug" Value="&quot;False&quot;" />
       <Property Name="Release.AspNetCompiler.FixedNames" Value="&quot;false&quot;" />
       <Property Name="Release.AspNetCompiler.ForceOverwrite" Value="&quot;true&quot;" />
-      <Property Name="Release.AspNetCompiler.PhysicalPath" Value="&quot;D:\Kala_smriti\KalaSmritiEcommerce\KalaSmritiEcommerce\&quot;" />
+      <Property Name="Release.AspNetCompiler.PhysicalPath" Value="&quot;.&quot;" />
       <Property Name="Release.AspNetCompiler.TargetPath" Value="&quot;PrecompiledWeb\localhost_52325\&quot;" />
       <Property Name="Release.AspNetCompiler.Updateable" Value="&quot;true&quot;" />
       <Property Name="Release.AspNetCompiler.VirtualPath" Value="&quot;/localhost_52325&quot;" />

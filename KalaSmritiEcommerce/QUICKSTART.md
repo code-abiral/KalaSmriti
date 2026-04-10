@@ -10,7 +10,7 @@ Get your KalaSmriti E-Commerce application up and running in minutes!
 ```
 1. Launch Visual Studio 2019/2022
 2. File â†’ Open â†’ Web Site
-3. Select folder: /home/bibhab/aashma/KalaSmriti
+3. Select your cloned repo folder: <your-clone-path>\KalaSmritiEcommerce
 4. Click "Open"
 ```
 

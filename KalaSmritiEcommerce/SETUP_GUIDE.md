@@ -14,7 +14,7 @@ Since this project was created as individual files, here's how to set it up in V
 
 3. **Select ASP.NET Empty Web Site**
    - Choose "ASP.NET Empty Web Site" template
-   - Select location: `/home/bibhab/aashma/KalaSmriti`
+   - Select your cloned repo folder: `<your-clone-path>\KalaSmritiEcommerce`
    - Click OK
 
 4. **The project structure is already in place**
@@ -27,7 +27,7 @@ Since this project was created as individual files, here's how to set it up in V
 
 2. **Open Web Site**
    - File â†’ Open â†’ Web Site
-   - Navigate to: `/home/bibhab/aashma/KalaSmriti`
+   - Navigate to your cloned repo folder: `<your-clone-path>\KalaSmritiEcommerce`
    - Click "Open"
 
 3. **Visual Studio will load all files automatically**

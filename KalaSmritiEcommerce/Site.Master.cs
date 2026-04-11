@@ -21,7 +21,18 @@ public partial class SiteMaster : System.Web.UI.MasterPage
                 else
                 {
                     if (lblCartCount != null) lblCartCount.Text = "0";
+                    if (lblCartCountMobile != null) lblCartCountMobile.Text = "0";
                 }
+            }
+
+            if (txtHeaderSearch != null && btnHeaderSearch != null)
+            {
+                txtHeaderSearch.Attributes["onkeydown"] = "if(event.key==='Enter'){event.preventDefault();document.getElementById('" + btnHeaderSearch.ClientID + "').click();}";
+            }
+
+            if (txtMobileSearch != null && btnMobileSearch != null)
+            {
+                txtMobileSearch.Attributes["onkeydown"] = "if(event.key==='Enter'){event.preventDefault();document.getElementById('" + btnMobileSearch.ClientID + "').click();}";
             }
         }
         catch (Exception ex)
@@ -73,7 +84,8 @@ public partial class SiteMaster : System.Web.UI.MasterPage
 
             if (string.IsNullOrWhiteSpace(email))
             {
-                lblCartCount.Text = "0";
+                if (lblCartCount != null) lblCartCount.Text = "0";
+                if (lblCartCountMobile != null) lblCartCountMobile.Text = "0";
                 return;
             }
 
@@ -89,17 +101,21 @@ public partial class SiteMaster : System.Web.UI.MasterPage
                 SqlParameter[] cartParams = { new SqlParameter("@CustomerID", customerId) };
 
                 int cartCount = Convert.ToInt32(KalaSmriti.DBHelper.ExecuteScalar(cartQuery, cartParams));
-                lblCartCount.Text = cartCount.ToString();
+                string countText = cartCount.ToString();
+                if (lblCartCount != null) lblCartCount.Text = countText;
+                if (lblCartCountMobile != null) lblCartCountMobile.Text = countText;
             }
             else
             {
-                lblCartCount.Text = "0";
+                if (lblCartCount != null) lblCartCount.Text = "0";
+                if (lblCartCountMobile != null) lblCartCountMobile.Text = "0";
             }
         }
         catch (Exception ex)
         {
             System.Diagnostics.Debug.WriteLine("Error updating cart count: " + ex.Message);
-            lblCartCount.Text = "0";
+            if (lblCartCount != null) lblCartCount.Text = "0";
+            if (lblCartCountMobile != null) lblCartCountMobile.Text = "0";
         }
     }
 
@@ -135,5 +151,29 @@ public partial class SiteMaster : System.Web.UI.MasterPage
         Response.Cookies.Add(cookie);
 
         Response.Redirect("~/Default.aspx");
+    }
+
+    protected void HeaderSearch_Click(object sender, EventArgs e)
+    {
+        string searchTerm = string.Empty;
+
+        if (txtHeaderSearch != null && !string.IsNullOrWhiteSpace(txtHeaderSearch.Text))
+        {
+            searchTerm = txtHeaderSearch.Text.Trim();
+        }
+
+        if (string.IsNullOrWhiteSpace(searchTerm) && txtMobileSearch != null && !string.IsNullOrWhiteSpace(txtMobileSearch.Text))
+        {
+            searchTerm = txtMobileSearch.Text.Trim();
+        }
+
+        string targetUrl = "~/Shop.aspx";
+
+        if (!string.IsNullOrWhiteSpace(searchTerm))
+        {
+            targetUrl += "?search=" + Server.UrlEncode(searchTerm);
+        }
+
+        Response.Redirect(targetUrl);
     }
 }

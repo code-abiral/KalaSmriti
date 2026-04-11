@@ -25,12 +25,19 @@
                         
                         <div class="mb-8">
                             <label class="block text-[10px] font-bold uppercase tracking-widest text-stone-400 mb-3">Search Collection</label>
-                            <asp:TextBox ID="txtSearch" runat="server" 
-                                CssClass="w-full px-0 py-2 border-b border-stone-200 bg-transparent focus:outline-none focus:border-amber-700 transition-colors italic text-sm text-stone-800"
-                                placeholder="e.g. Bronze Buddha..."
-                                AutoPostBack="true"
-                                OnTextChanged="ApplyFilters">
-                            </asp:TextBox>
+                            <div class="flex items-center gap-2">
+                                <asp:TextBox ID="txtSearch" runat="server" 
+                                    CssClass="w-full px-0 py-2 border-b border-stone-200 bg-transparent focus:outline-none focus:border-amber-700 transition-colors italic text-sm text-stone-800"
+                                    placeholder="e.g. Bronze Buddha..."
+                                    AutoPostBack="true"
+                                    OnTextChanged="ApplyFilters">
+                                </asp:TextBox>
+                                <asp:Button ID="btnSearchProducts" runat="server"
+                                    Text="Search"
+                                    OnClick="ApplyFilters"
+                                    CausesValidation="false"
+                                    CssClass="border border-stone-200 text-stone-500 px-4 py-2 text-[10px] font-bold uppercase tracking-widest hover:bg-stone-50 transition cursor-pointer" />
+                            </div>
                         </div>
 
                         <div class="mb-8">

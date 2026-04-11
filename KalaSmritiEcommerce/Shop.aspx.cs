@@ -13,7 +13,18 @@ public partial class Shop : Page
         if (!IsPostBack)
         {
             LoadCategories();
+            ApplyQueryStringFilters();
             LoadProducts();
+        }
+    }
+
+    private void ApplyQueryStringFilters()
+    {
+        string search = Request.QueryString["search"];
+
+        if (!string.IsNullOrWhiteSpace(search))
+        {
+            txtSearch.Text = search.Trim();
         }
     }
 

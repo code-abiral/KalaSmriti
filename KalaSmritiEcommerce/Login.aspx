@@ -61,7 +61,7 @@
         <div class="max-w-md w-full space-y-8 bg-white p-10 border border-stone-200 shadow-sm">
             
             <div class="text-center">
-                <div class="relative inline-block">
+                <!-- <div class="relative inline-block">
                     <div class="user-placeholder-frame rounded-full">
                         <div class="h-28 w-28 rounded-full bg-stone-100 flex items-center justify-center overflow-hidden border border-stone-50">
                             <i id="defaultUserIcon" class="fas fa-user text-stone-300 text-5xl"></i>
@@ -73,7 +73,7 @@
                         <i class="fas fa-camera text-[12px]"></i>
                     </label>
                     <asp:FileUpload ID="fuProfileImage" runat="server" class="hidden-upload" onchange="previewImage(this)" />
-                </div>
+                </div> -->
                 
                 <h2 class="font-heritage text-3xl text-stone-900 uppercase tracking-tighter mt-6">
                     Collector <span class="italic text-amber-800">Access</span>

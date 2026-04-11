@@ -98,7 +98,7 @@
 
         <div class="nepal-gradient text-white text-[10px] py-2 text-center uppercase tracking-[0.3em] font-bold shadow-md">
 
-            <i class="fas fa-om mr-2"></i> Handcrafted Heritage from the Himalayas • Free Shipping in Nepal <i class="fas fa-om ml-2"></i>
+            <i class="fas fa-om mr-2"></i> Handcrafted Heritage from the Himalayas !! Free Shipping in Nepal <i class="fas fa-om ml-2"></i>
 
         </div>
 
@@ -112,7 +112,7 @@
 
                     
 
-                    <a href="Default.aspx" class="flex flex-col items-center group flex-shrink-0">
+                    <a href="<%= ResolveUrl("~/Default.aspx") %>" class="flex flex-col items-center group flex-shrink-0">
 
                         <span class="font-heritage text-2xl md:text-3xl font-bold tracking-tighter text-amber-900 group-hover:text-amber-700 transition-colors">KALASMRITI</span>
 
@@ -132,13 +132,15 @@
 
                     <nav class="hidden lg:flex items-center space-x-10 text-[11px] font-bold uppercase tracking-[0.2em] text-gray-600">
 
-                        <a href="Default.aspx" class="nav-item">Home</a>
+                        <a href="<%= ResolveUrl("~/Default.aspx") %>" class="nav-item">Home</a>
 
-                        <a href="Shop.aspx" class="nav-item">Shop</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="nav-item">Shop</a>
 
-                        <a href="About.aspx" class="nav-item">About</a>
+                        <a href="<%= ResolveUrl("~/About.aspx") %>" class="nav-item">About</a>
 
-                        <a href="Contact.aspx" class="nav-item">Contact</a>
+                        <a href="<%= ResolveUrl("~/Contact.aspx") %>" class="nav-item">Contact</a>
+
+                        <a href="<%= ResolveUrl("~/Orders.aspx") %>" class="nav-item">My Orders</a>
 
                     </nav>
 
@@ -148,11 +150,14 @@
 
                         <div class="relative group">
 
-                            <input type="text" placeholder="Search heritage..." 
+                            <asp:TextBox ID="txtHeaderSearch" runat="server" placeholder="Search heritage..."
 
-                                   class="bg-amber-50/30 border-b border-amber-200 py-1.5 pl-8 pr-4 text-xs focus:border-amber-700 outline-none transition-all w-40 focus:w-60 italic" />
+                                   CssClass="bg-amber-50/30 border-b border-amber-200 py-1.5 pl-8 pr-10 text-xs focus:border-amber-700 outline-none transition-all w-40 focus:w-60 italic" />
 
-                            <i class="fas fa-search absolute left-0 top-2 text-amber-800/40"></i>
+                            <asp:LinkButton ID="btnHeaderSearch" runat="server" OnClick="HeaderSearch_Click" CausesValidation="false"
+                                CssClass="absolute right-0 top-0 h-full px-2 text-amber-800/40 hover:text-amber-800" aria-label="Search">
+                                <i class="fas fa-search"></i>
+                            </asp:LinkButton>
 
                         </div>
 
@@ -162,13 +167,13 @@
 
                             <% if (!HttpContext.Current.User.Identity.IsAuthenticated) { %>
 
-                                <a href="Login.aspx" class="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-amber-800">Login</a>
+                                <a href="<%= ResolveUrl("~/Login.aspx") %>" class="text-[11px] font-bold uppercase tracking-widest text-gray-500 hover:text-amber-800">Login</a>
 
-                                <a href="Register.aspx" class="bg-amber-900 text-white px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-800 transition shadow-lg rounded-sm">Register</a>
+                                <a href="<%= ResolveUrl("~/Register.aspx") %>" class="bg-amber-900 text-white px-6 py-2.5 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-800 transition shadow-lg rounded-sm">Register</a>
 
                             <% } else { %>
 
-                                <a href="Notifications.aspx" class="relative group px-2">
+                                <a href="<%= ResolveUrl("~/Notifications.aspx") %>" class="relative group px-2">
 
                                     <i class="fas fa-bell text-xl text-amber-800 group-hover:text-amber-600 transition-colors"></i>
 
@@ -184,7 +189,7 @@
 
 
 
-                                <a href="Profile.aspx" class="group flex items-center space-x-3">
+                                <a href="<%= ResolveUrl("~/Profile.aspx") %>" class="group flex items-center space-x-3">
 
                                     <div class="relative">
 
@@ -204,7 +209,7 @@
 
                             
 
-                            <a href="Cart.aspx" class="relative group ml-2">
+                            <a href="<%= ResolveUrl("~/Cart.aspx") %>" class="relative group ml-2">
 
                                 <i class="fas fa-shopping-bag text-2xl text-amber-900 group-hover:scale-110 transition-transform"></i>
 
@@ -224,7 +229,7 @@
 
                         <% if (HttpContext.Current.User.Identity.IsAuthenticated) { %>
 
-                            <a href="Notifications.aspx" class="relative">
+                            <a href="<%= ResolveUrl("~/Notifications.aspx") %>" class="relative">
 
                                 <i class="fas fa-bell text-xl text-amber-900"></i>
 
@@ -240,11 +245,12 @@
 
 
 
-                         <a href="Cart.aspx" class="relative">
+                         <a href="<%= ResolveUrl("~/Cart.aspx") %>" class="relative">
 
                             <i class="fas fa-shopping-bag text-xl text-amber-900"></i>
 
-                            <span class="absolute -top-2 -right-2 bg-red-700 text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">0</span>
+                            <asp:Label ID="lblCartCountMobile" runat="server"
+                                CssClass="absolute -top-2 -right-2 bg-red-700 text-white text-[8px] rounded-full h-4 w-4 flex items-center justify-center">0</asp:Label>
 
                         </a>
 
@@ -276,9 +282,13 @@
 
                     
 
-                    <div class="mb-8">
+                    <div class="mb-8 flex gap-2">
 
-                        <input type="text" placeholder="Search treasures..." class="w-full bg-amber-50 p-4 rounded-sm border border-amber-100 outline-none italic" />
+                        <asp:TextBox ID="txtMobileSearch" runat="server" placeholder="Search treasures..." CssClass="w-full bg-amber-50 p-4 rounded-sm border border-amber-100 outline-none italic" />
+                        <asp:LinkButton ID="btnMobileSearch" runat="server" OnClick="HeaderSearch_Click" CausesValidation="false"
+                            CssClass="shrink-0 bg-amber-900 text-white px-4 rounded-sm hover:bg-amber-800 transition" aria-label="Search" OnClientClick="toggleMenu();">
+                            <i class="fas fa-search"></i>
+                        </asp:LinkButton>
 
                     </div>
 
@@ -286,25 +296,25 @@
 
                     <nav class="flex flex-col space-y-6 text-sm font-bold uppercase tracking-[0.3em] text-gray-800">
 
-                        <a href="Default.aspx" onclick="toggleMenu()">Home</a>
+                        <a href="<%= ResolveUrl("~/Default.aspx") %>" onclick="toggleMenu()">Home</a>
 
-                        <a href="Shop.aspx" onclick="toggleMenu()">Shop</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" onclick="toggleMenu()">Shop</a>
 
-                        <a href="About.aspx" onclick="toggleMenu()">About</a>
+                        <a href="<%= ResolveUrl("~/About.aspx") %>" onclick="toggleMenu()">About</a>
 
-                        <a href="Contact.aspx" onclick="toggleMenu()">Contact</a>
+                        <a href="<%= ResolveUrl("~/Contact.aspx") %>" onclick="toggleMenu()">Contact</a>
 
                         <hr class="border-amber-50" />
 
                         <% if (!HttpContext.Current.User.Identity.IsAuthenticated) { %>
 
-                            <a href="Login.aspx" class="text-amber-700">Login</a>
+                            <a href="<%= ResolveUrl("~/Login.aspx") %>" class="text-amber-700">Login</a>
 
-                            <a href="Register.aspx" class="bg-amber-900 text-white p-4 text-center rounded-sm">Register</a>
+                            <a href="<%= ResolveUrl("~/Register.aspx") %>" class="bg-amber-900 text-white p-4 text-center rounded-sm">Register</a>
 
                         <% } else { %>
 
-                            <a href="Notifications.aspx" onclick="toggleMenu()" class="flex items-center gap-2">
+                            <a href="<%= ResolveUrl("~/Notifications.aspx") %>" onclick="toggleMenu()" class="flex items-center gap-2">
 
                                 <i class="fas fa-bell"></i> Notifications
 
@@ -318,7 +328,7 @@
 
                                     ImageUrl="~/Uploads/Profiles/default-user.png" />
 
-                                <a href="Profile.aspx" class="text-amber-900" onclick="toggleMenu()">My Profile</a>
+                                <a href="<%= ResolveUrl("~/Profile.aspx") %>" class="text-amber-900" onclick="toggleMenu()">My Profile</a>
 
                             </div>
 
@@ -368,13 +378,13 @@
 
                         <span class="text-white text-[11px] font-bold uppercase tracking-[0.2em] mb-2">Collections</span>
 
-                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Traditional Thangka</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Traditional Thangka</a>
 
-                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Wooden Carvings</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Wooden Carvings</a>
 
-                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Bronze Statues</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Bronze Statues</a>
 
-                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Heritage Bells</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Heritage Bells</a>
 
                     </div>
 
@@ -384,13 +394,13 @@
 
                         <span class="text-white text-[11px] font-bold uppercase tracking-[0.2em] mb-2">Quick Links</span>
 
-                        <a href="Default.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Home</a>
+                        <a href="<%= ResolveUrl("~/Default.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Home</a>
 
-                        <a href="Shop.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Shop Collection</a>
+                        <a href="<%= ResolveUrl("~/Shop.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Shop Collection</a>
 
-                        <a href="About.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">About Us</a>
+                        <a href="<%= ResolveUrl("~/About.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">About Us</a>
 
-                        <a href="Contact.aspx" class="text-[10px] uppercase tracking-widest hover:text-white transition">Contact</a>
+                        <a href="<%= ResolveUrl("~/Contact.aspx") %>" class="text-[10px] uppercase tracking-widest hover:text-white transition">Contact</a>
 
                     </div>
 
@@ -458,6 +468,50 @@
 
         }
 
+
+                    function initializePasswordToggles() {
+                        const passwordInputs = document.querySelectorAll('input[type="password"]:not([data-toggle-ready="true"])');
+
+                        passwordInputs.forEach(function (input) {
+                            input.setAttribute('data-toggle-ready', 'true');
+
+                            const wrapper = document.createElement('div');
+                            wrapper.className = 'relative';
+
+                            const parent = input.parentNode;
+                            parent.insertBefore(wrapper, input);
+                            wrapper.appendChild(input);
+
+                            if (!input.classList.contains('pr-11')) {
+                                input.classList.add('pr-11');
+                            }
+
+                            const button = document.createElement('button');
+                            button.type = 'button';
+                            button.className = 'absolute inset-y-0 right-0 px-3 flex items-center text-stone-500 hover:text-amber-800 focus:outline-none';
+                            button.setAttribute('aria-label', 'Show password');
+                            button.setAttribute('aria-pressed', 'false');
+                            button.innerHTML = '<i class="far fa-eye" aria-hidden="true"></i>';
+
+                            button.addEventListener('click', function () {
+                                const isPassword = input.type === 'password';
+                                input.type = isPassword ? 'text' : 'password';
+                                button.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+                                button.setAttribute('aria-pressed', isPassword ? 'true' : 'false');
+                                button.innerHTML = isPassword
+                                    ? '<i class="far fa-eye-slash" aria-hidden="true"></i>'
+                                    : '<i class="far fa-eye" aria-hidden="true"></i>';
+                            });
+
+                            wrapper.appendChild(button);
+                        });
+                    }
+
+                    document.addEventListener('DOMContentLoaded', initializePasswordToggles);
+
+                    if (window.Sys && Sys.WebForms && Sys.WebForms.PageRequestManager) {
+                        Sys.WebForms.PageRequestManager.getInstance().add_endRequest(initializePasswordToggles);
+                    }
     </script>
 
 </body>

@@ -399,19 +399,122 @@ public partial class Checkout : Page
     {
         if (localCustomerId <= 0)
         {
+            System.Diagnostics.Debug.WriteLine("SendOrderNotificationSafe skipped: invalid customer ID.");
             return;
         }
 
         try
         {
             string email = GetCustomerEmailById(localCustomerId);
-            string fullBody = "Order #" + orderId + ": " + body;
-            KalaSmriti.NotificationService.SendOrderNotification(localCustomerId, email, title, fullBody);
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                System.Diagnostics.Debug.WriteLine("SendOrderNotificationSafe skipped: customer email is empty for customer ID " + localCustomerId);
+                return;
+            }
+
+            DataTable orderItems = GetOrderItems(orderId);
+            decimal orderTotal = GetOrderTotal(orderId);
+            decimal itemsSubtotal = 0;
+            for (int i = 0; i < orderItems.Rows.Count; i++)
+            {
+                itemsSubtotal += Convert.ToDecimal(orderItems.Rows[i]["LineTotal"]);
+            }
+
+            decimal shippingAmount = orderTotal - itemsSubtotal;
+            if (shippingAmount < 0)
+            {
+                shippingAmount = 0;
+            }
+
+            string fullBody = "Order #" + orderId + ": " + body
+                + Environment.NewLine + "Total Amount: Rs. " + orderTotal.ToString("N2");
+
+            string htmlBody = BuildOrderEmailHtml(orderId, title, body, orderItems, itemsSubtotal, shippingAmount, orderTotal);
+            KalaSmriti.NotificationService.SendOrderNotification(localCustomerId, email, title, fullBody, htmlBody);
         }
-        catch
+        catch (Exception ex)
         {
             // Do not block checkout flow for notification failures.
+            System.Diagnostics.Debug.WriteLine("SendOrderNotificationSafe failed for order " + orderId + ": " + ex.Message);
         }
+    }
+
+    private DataTable GetOrderItems(int orderId)
+    {
+        string query = @"SELECT p.ProductName,
+                                oi.Quantity,
+                                oi.UnitPrice,
+                                oi.TotalPrice AS LineTotal
+                         FROM Order_Item oi
+                         INNER JOIN Product p ON p.ProductID = oi.ProductID
+                         WHERE oi.OrderID = @OrderID
+                         ORDER BY oi.OrderItemID";
+
+        return KalaSmriti.DBHelper.ExecuteQuery(query, new[] { new SqlParameter("@OrderID", orderId) });
+    }
+
+    private decimal GetOrderTotal(int orderId)
+    {
+        object result = KalaSmriti.DBHelper.ExecuteScalar("SELECT TotalAmount FROM [Order] WHERE OrderID = @OrderID", new[] { new SqlParameter("@OrderID", orderId) });
+        return result == null ? 0 : Convert.ToDecimal(result);
+    }
+
+    private string BuildOrderEmailHtml(int orderId, string title, string statusText, DataTable orderItems, decimal subtotalAmount, decimal shippingAmount, decimal totalAmount)
+    {
+        StringBuilder rowsBuilder = new StringBuilder();
+        for (int i = 0; i < orderItems.Rows.Count; i++)
+        {
+            DataRow row = orderItems.Rows[i];
+            string name = HttpUtility.HtmlEncode(row["ProductName"].ToString());
+            int quantity = Convert.ToInt32(row["Quantity"]);
+            decimal unitPrice = Convert.ToDecimal(row["UnitPrice"]);
+            decimal lineTotal = Convert.ToDecimal(row["LineTotal"]);
+
+            rowsBuilder.Append("<tr>")
+                .Append("<td style='padding:10px;border-bottom:1px solid #e7e5e4;font-size:13px;color:#1c1917;'>").Append(name).Append("</td>")
+                .Append("<td style='padding:10px;border-bottom:1px solid #e7e5e4;font-size:13px;color:#1c1917;text-align:center;'>").Append(quantity).Append("</td>")
+                .Append("<td style='padding:10px;border-bottom:1px solid #e7e5e4;font-size:13px;color:#1c1917;text-align:right;'>Rs. ").Append(unitPrice.ToString("N2")).Append("</td>")
+                .Append("<td style='padding:10px;border-bottom:1px solid #e7e5e4;font-size:13px;color:#1c1917;text-align:right;'>Rs. ").Append(lineTotal.ToString("N2")).Append("</td>")
+                .Append("</tr>");
+        }
+
+        if (rowsBuilder.Length == 0)
+        {
+            rowsBuilder.Append("<tr><td colspan='4' style='padding:10px;border-bottom:1px solid #e7e5e4;font-size:13px;color:#57534e;text-align:center;'>No order items found.</td></tr>");
+        }
+
+        StringBuilder html = new StringBuilder();
+        html.Append("<!DOCTYPE html><html><head><meta charset='utf-8'></head><body style='margin:0;padding:24px;background:#f5f5f4;font-family:Segoe UI,Arial,sans-serif;color:#1c1917;'>")
+            .Append("<table role='presentation' cellpadding='0' cellspacing='0' border='0' width='100%' style='max-width:700px;margin:0 auto;background:#ffffff;border:1px solid #e7e5e4;'>")
+            .Append("<tr><td style='background:#1a140f;color:#ffffff;padding:20px 24px;'><div style='font-size:11px;letter-spacing:1.8px;text-transform:uppercase;opacity:0.85;'>KalaSmriti</div><div style='margin-top:8px;font-size:20px;line-height:1.3;font-weight:700;'>")
+            .Append(HttpUtility.HtmlEncode(title))
+            .Append("</div></td></tr>")
+            .Append("<tr><td style='padding:22px 24px;'>")
+            .Append("<p style='margin:0 0 12px 0;font-size:14px;line-height:1.7;color:#44403c;'>Order #")
+            .Append(orderId)
+            .Append("</p>")
+            .Append("<p style='margin:0 0 18px 0;font-size:14px;line-height:1.7;color:#44403c;'>")
+            .Append(HttpUtility.HtmlEncode(statusText))
+            .Append("</p>")
+            .Append("<table role='presentation' cellpadding='0' cellspacing='0' border='0' width='100%' style='border-collapse:collapse;border:1px solid #e7e5e4;'>")
+            .Append("<thead><tr style='background:#fafaf9;'>")
+            .Append("<th style='padding:10px;text-align:left;border-bottom:1px solid #e7e5e4;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#57534e;'>Item</th>")
+            .Append("<th style='padding:10px;text-align:center;border-bottom:1px solid #e7e5e4;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#57534e;'>Qty</th>")
+            .Append("<th style='padding:10px;text-align:right;border-bottom:1px solid #e7e5e4;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#57534e;'>Unit Price</th>")
+            .Append("<th style='padding:10px;text-align:right;border-bottom:1px solid #e7e5e4;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:#57534e;'>Line Total</th>")
+            .Append("</tr></thead><tbody>")
+            .Append(rowsBuilder.ToString())
+            .Append("</tbody></table>")
+            .Append("<table role='presentation' cellpadding='0' cellspacing='0' border='0' width='100%' style='margin-top:14px;border-collapse:collapse;'>")
+            .Append("<tr><td style='padding:4px 0;font-size:13px;color:#57534e;'>Subtotal</td><td style='padding:4px 0;font-size:13px;color:#1c1917;text-align:right;'>Rs. ").Append(subtotalAmount.ToString("N2")).Append("</td></tr>")
+            .Append("<tr><td style='padding:4px 0;font-size:13px;color:#57534e;'>Shipping</td><td style='padding:4px 0;font-size:13px;color:#1c1917;text-align:right;'>Rs. ").Append(shippingAmount.ToString("N2")).Append("</td></tr>")
+            .Append("<tr><td style='padding:8px 0 0 0;font-size:14px;font-weight:700;color:#1c1917;border-top:1px solid #e7e5e4;'>Total Amount</td><td style='padding:8px 0 0 0;font-size:14px;font-weight:700;color:#1c1917;text-align:right;border-top:1px solid #e7e5e4;'>Rs. ").Append(totalAmount.ToString("N2")).Append("</td></tr>")
+            .Append("</table>")
+            .Append("</td></tr>")
+            .Append("<tr><td style='padding:16px 24px;border-top:1px solid #e7e5e4;font-size:11px;color:#78716c;'>Thank you for shopping with KalaSmriti.</td></tr>")
+            .Append("</table></body></html>");
+
+        return html.ToString();
     }
 
     private void MarkPaymentSuccess(int orderId, string gatewayTransactionCode)

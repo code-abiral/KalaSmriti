@@ -13,3 +13,6 @@ App_Data/KalaSmriti_Working_log.ldf
 *.user
 *.suo
 *.userosscache
+
+# Environment secrets
+.env

@@ -51,9 +51,7 @@ public partial class Login : Page
                 DataRow row = dt.Rows[0];
                 string storedPassword = row["Password"].ToString();
 
-                // In production, use hashed passwords (bcrypt, PBKDF2, etc.)
-                // For demo purposes, plain text comparison
-                if (password == storedPassword)
+                if (KalaSmriti.PasswordSecurity.VerifyPassword(password, storedPassword))
                 {
                     // Update last login
                     string updateQuery = "UPDATE Customer SET LastLogin = GETDATE() WHERE Email = @Email";
@@ -104,10 +102,59 @@ public partial class Login : Page
         }
     }
 
+    protected void btnForgotPassword_Click(object sender, EventArgs e)
+    {
+        string email = txtEmail.Text.Trim();
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            ShowError("Please enter your Registry Email first.");
+            return;
+        }
+
+        try
+        {
+            string query = @"SELECT TOP 1 CustomerID, FirstName
+                             FROM Customer
+                             WHERE Email = @Email";
+
+            DataTable dt = KalaSmriti.DBHelper.ExecuteQuery(query, new[] { new SqlParameter("@Email", email) });
+
+            if (dt.Rows.Count > 0)
+            {
+                DataRow row = dt.Rows[0];
+                int customerId = Convert.ToInt32(row["CustomerID"]);
+                string firstName = row["FirstName"] == DBNull.Value ? string.Empty : row["FirstName"].ToString();
+                string token = KalaSmriti.PasswordResetService.CreateResetToken(customerId);
+                string resetUrl = Request.Url.GetLeftPart(UriPartial.Authority)
+                    + ResolveUrl("~/ResetPassword.aspx?token=")
+                    + Server.UrlEncode(token);
+
+                KalaSmriti.NotificationService.SendPasswordResetLinkEmail(email, firstName, resetUrl);
+            }
+
+            // Neutral message prevents account discovery by email probing.
+            ShowInfo("If the email is registered, recovery instructions were sent.");
+        }
+        catch (Exception ex)
+        {
+            ShowError("Unable to process the request right now. Please try again later.");
+            System.Diagnostics.Debug.WriteLine("Forgot password error: " + ex.Message);
+        }
+    }
+
     private void ShowError(string message)
     {
         lblError.Text = message;
         pnlError.Visible = true;
+        pnlInfo.Visible = false;
+    }
+
+    private void ShowInfo(string message)
+    {
+        lblInfo.Text = message;
+        pnlInfo.Visible = true;
+        pnlError.Visible = false;
     }
 }
 

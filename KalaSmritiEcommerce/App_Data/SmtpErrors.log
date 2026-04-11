@@ -1,0 +1,5 @@
+2026-04-11 18:01:31 | SMTP send failed: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. For more information, go to
+2026-04-11 18:23:36 | SMTP send failed: The operation has timed out.
+2026-04-11 18:24:01 | SMTP send failed: The SMTP server requires a secure connection or the client was not authenticated. The server response was: 5.7.0 Authentication Required. For more information, go to
+2026-04-11 18:32:59 | SMTP send failed: The operation has timed out.
+2026-04-11 18:34:16 | SMTP send failed: The operation has timed out.

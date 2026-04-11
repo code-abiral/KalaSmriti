@@ -88,6 +88,10 @@
                     <asp:Label ID="lblError" runat="server"></asp:Label>
                 </asp:Panel>
 
+                <asp:Panel ID="pnlInfo" runat="server" Visible="false" CssClass="p-4 bg-emerald-50 border-l-2 border-emerald-700 text-emerald-800 text-[10px] font-bold uppercase tracking-widest">
+                    <asp:Label ID="lblInfo" runat="server"></asp:Label>
+                </asp:Panel>
+
                 <div class="space-y-5">
                     <div>
                         <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-2">Registry Email</label>
@@ -109,8 +113,14 @@
                         <asp:CheckBox ID="chkRememberMe" runat="server" CssClass="h-4 w-4 accent-amber-900 border-stone-300 rounded-none" />
                         <label for="chkRememberMe" class="ml-2 block text-[10px] font-bold uppercase tracking-widest text-stone-500">Persist Session</label>
                     </div>
-                    <div class="text-[10px] font-bold uppercase tracking-widest">
-                        <a href="#" class="text-amber-800 hover:text-stone-900">Lost Passkey?</a>
+                </div>
+
+                <div class="border border-stone-200 p-4 bg-stone-50">
+                    <label class="block text-[10px] font-bold uppercase tracking-[0.2em] text-stone-400 mb-2">Lost Passkey?</label>
+                    <div class="flex gap-2">
+                        <span class="flex-1 text-[10px] text-stone-500 italic self-center">Uses the Registry Email field above</span>
+                        <asp:Button ID="btnForgotPassword" runat="server" Text="Send Reset Link" OnClick="btnForgotPassword_Click" CausesValidation="false" UseSubmitBehavior="false"
+                            CssClass="btn-heritage-rectangular px-5 text-[10px] font-bold uppercase tracking-[0.25em] text-white bg-stone-800 hover:bg-amber-900 transition-all cursor-pointer" />
                     </div>
                 </div>
 

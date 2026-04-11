@@ -80,7 +80,7 @@ public partial class Register : Page
                 new SqlParameter("@FirstName", txtFirstName.Text.Trim()),
                 new SqlParameter("@LastName", txtLastName.Text.Trim()),
                 new SqlParameter("@Email", email),
-                new SqlParameter("@Password", txtPassword.Text.Trim()),
+                new SqlParameter("@Password", KalaSmriti.PasswordSecurity.HashPassword(txtPassword.Text.Trim())),
                 new SqlParameter("@Phone", string.IsNullOrEmpty(txtPhone.Text) ? (object)DBNull.Value : txtPhone.Text.Trim()),
                 new SqlParameter("@Address", string.IsNullOrEmpty(txtAddress.Text) ? (object)DBNull.Value : txtAddress.Text.Trim()),
                 new SqlParameter("@City", string.IsNullOrEmpty(txtCity.Text) ? (object)DBNull.Value : txtCity.Text.Trim()),

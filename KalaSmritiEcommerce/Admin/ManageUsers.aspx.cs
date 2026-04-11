@@ -173,7 +173,7 @@ DELETE FROM Notification WHERE CustomerID = @CustomerID", new[] { new SqlParamet
                 new SqlParameter("@FirstName", txtFirstName.Text.Trim()),
                 new SqlParameter("@LastName", txtLastName.Text.Trim()),
                 new SqlParameter("@Email", txtEmail.Text.Trim()),
-                new SqlParameter("@Password", txtPassword.Text.Trim()),
+                new SqlParameter("@Password", KalaSmriti.PasswordSecurity.HashPassword(txtPassword.Text.Trim())),
                 new SqlParameter("@Phone", txtPhone.Text.Trim()),
                 new SqlParameter("@IsAdmin", ddlFormRole.SelectedValue == "1")
             };
@@ -227,7 +227,7 @@ DELETE FROM Notification WHERE CustomerID = @CustomerID", new[] { new SqlParamet
             {
                 KalaSmriti.DBHelper.ExecuteNonQuery("UPDATE Customer SET Password = @Password WHERE CustomerID = @CustomerID",
                     new[] {
-                        new SqlParameter("@Password", txtPassword.Text.Trim()),
+                        new SqlParameter("@Password", KalaSmriti.PasswordSecurity.HashPassword(txtPassword.Text.Trim())),
                         new SqlParameter("@CustomerID", customerId)
                     });
             }
